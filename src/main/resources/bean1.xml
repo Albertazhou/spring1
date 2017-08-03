@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	  <bean id="user" class="example.User"></bean>
+	  
+	  <bean id="personDao" class="can.dao.impl.PersonDaoBean"></bean>
+	  <bean id="pdc" class="can.dao.impl.PersonDaoBean">
+	      <constructor-arg index="0" type="can.dao.PersonDao" ref="personDao"></constructor-arg>
+	      <constructor-arg index="1" value="I am"></constructor-arg>
+	  </bean>
+	  
+	  <!-- 使用静态工厂的方式创建对象(一般不用) -->
+	<!-- 注释:CTRL + SHIFT + /   <bean id="bean2" class="bean.beanFactory" factory-method="getBean2"></bean> -->
+	  
+	  <!-- 使用实例工厂创建对象 -->
+	  <bean id="beanFactory3" class="bean.beanFactory3" ></bean>
+	  <bean id="bean2" factory-bean="beanFactory3" factory-method="getBean3"></bean>
+	  
+	  <!-- 依赖注入一、
+	  <bean id="personDao" class="can.dao.impl.PersonDaoBean"></bean>
+	  <bean id="personService" class="can.Service.impl.PersonServiceBean">
+	      <property name="personDao" ref="personDao"></property>
+	  </bean>
+	   -->
+	   <!-- 依赖注入二、 -->
+	     <bean id="personService" class="can.Service.impl.PersonServiceBean">
+	      <property name="personDao">
+	          <bean class="can.dao.impl.PersonDaoBean"></bean>
+	          
+	      </property>
+	      <property name="name" value="the value of name"></property>
+	      <property name="id" value="110"></property>
+	  </bean>
+	  
+	     <!-- Set类型 -->
+	     <bean id="setnlist" class="can.Service.impl.PersonServiceBean">
+	         <property name="sets">
+	             <set>
+	                 <value>第一个</value>
+	                 <value>第儿个</value>
+	                 <value>第三个</value>
+	             </set>
+	         </property>
+	         <property name="lists">
+	             <list>
+	                 <value>第一个l</value>
+	                 <value>第儿个l</value>
+	                 <value>第三个l</value>
+	             </list>
+	         </property>
+	         <property name="properties">
+	             <props>
+	                 <prop key="key1">value1</prop>
+	                 <prop key="key2">value2</prop>
+	                 <prop key="key3">value3</prop>
+	             </props>
+	         </property>
+	         <property name="maps">
+	             <map>
+	                 <entry key="key1_map" value="vm1"/>
+	                 <entry key="key1_map" value="vm1"/>
+	                 <entry key="key1_map" value="vm1"/>
+	             </map>
+	         </property>
+	     </bean>
+	     
+
+</beans>
